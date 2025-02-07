@@ -134,7 +134,7 @@
         }
 
         .icons {
-             float: right;
+            float: right;
             margin-top: 10px;
         }
 
@@ -164,6 +164,124 @@
                 float: right;
                 margin-top: 10px;
             }
+        }
+
+        .surat-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .surat-item {
+            background: white;
+            color: black;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tab-content {
+            margin-top: 20px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+        }
+
+        .pagination li {
+            cursor: pointer;
+        }
+
+        .pagination li.disabled {
+            pointer-events: none;
+        }
+
+        .pagination li .page-link {
+            color: rgb(177, 187, 197);
+        }
+
+        .pagination li.active .page-link {
+            color: #fff;
+            background-color: #6c757d;
+        }
+
+
+
+        .nav-tabs .nav-item .nav-link {
+            background-color: #f8f9fa;
+            color: #555;
+            border-color: #ddd;
+        }
+
+        .nav-tabs .nav-item .nav-link:hover {
+            background-color: #ddd;
+        }
+
+        .nav-tabs .nav-item .nav-link.active {
+            background-color: rgb(135, 151, 167);
+            color: white;
+            border-color: rgb(124, 139, 155);
+        }
+
+        .pagination .page-item .page-link {
+            color: #777;
+            background-color: #f8f9fa;
+            border-color: #ddd;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: rgb(110, 121, 133);
+            color: white;
+            border-color: rgb(128, 145, 163);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #ccc;
+            background-color: #f8f9fa;
+            border-color: #ddd;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .action-buttons button {
+            padding: 5px 10px;
+            background-color: #6c757d;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .tab-title {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            font-weight: bold;
         }
     </style>
     @include('sweetalert::alert')

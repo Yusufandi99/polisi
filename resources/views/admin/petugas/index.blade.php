@@ -69,17 +69,17 @@
         </div>
 
         <div class="form-group">
-    <label for="pass_login">Password</label>
-    <div class="input-group">
-        <input type="password" name="pass_login" id="pass_login" class="form-control" required oninput="checkPasswordLength()">
-        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">👁</button>
-    </div>
-    <small id="passwordWarning" style="color: red; display: none;">Password maksimal 8 karakter!</small>
-</div>
-
+            <label for="pass_login">Password</label>
+            <div class="input-group">
+                <input type="password" name="pass_login" id="pass_login" class="form-control" required oninput="checkPasswordLength()">
+                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">👁</button>
+            </div>
+            <small id="passwordWarning" style="color: red; display: none;">Password maksimal 8 karakter!</small>
+        </div>
 
         <button type="submit" class="btn btn-secondary">Simpan</button>
     </form>
     <div id="responseMessage" style="display: none;"></div>
 </div>
+<script src="{{ asset('js/admin/petugas/petugas.js') }}"></script>
 @endsection
