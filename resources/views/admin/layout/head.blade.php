@@ -283,10 +283,70 @@
             margin-top: 15px;
             font-weight: bold;
         }
+
+        /* Tracking */
+        .tracking-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .tracking-step {
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .tracking-step::before {
+            content: "";
+            position: absolute;
+            left: 9px;
+            /* Sesuaikan agar tetap menyatu dengan titik */
+            top: 10px;
+            width: 2px;
+            height: 100%;
+            background-color: gray;
+        }
+
+        .tracking-step:last-child::before {
+            height: 10px;
+        }
+
+        .tracking-circle {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #007bff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 12px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .tracking-content {
+            margin-left: 10px;
+        }
+
+        .tracking-text {
+            font-weight: bold;
+        }
+
+        .tracking-date {
+            font-size: 12px;
+            color: gray;
+        }
     </style>
-    @include('sweetalert::alert')
+    <!-- @include('sweetalert::alert') -->
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="Fri, 01 Jan 1990 00:00:00 GMT">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>

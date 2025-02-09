@@ -53,4 +53,9 @@
     });
 </script>
 <script src="{{ asset('js/admin/list/list.js') }}"></script>
+<script>
+    window.riwayatIndexUrl = "{{ route('riwayat.index') }}";
+    window.prosesIndexUrl = "{{ route('proses.index') }}";
+    window.editIndexUrl = "{{ route('edit.index') }}";
+</script>
 @endsection

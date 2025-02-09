@@ -30,123 +30,162 @@ async function loadData(tabId, searchQuery = "") {
         // Filter data sesuai pencarian
         if (searchQuery) {
             data = data.filter((item) =>
-                item.no_surat.toLowerCase().includes(searchQuery)
+                item.no_disposisi.toLowerCase().includes(searchQuery)
             );
         }
 
         updatePagination(tabId, data);
     } catch (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
     }
 }
 
-function updatePagination(tabId, data, page = 1) {
+async function getDeskripsiDevisi(noDisposisi) {
+    try {
+        // Panggil API atau backend yang mengembalikan deskripsi_devisi berdasarkan no_disposisi
+        const response = await fetch(
+            `/api/get-devisi?no_disposisi=${noDisposisi}`
+        );
+        const data = await response.json();
+        return data.deskripsi_devisi || "Tidak Diketahui";
+    } catch (error) {
+        console.error("Gagal mengambil deskripsi devisi:", error);
+        return "Error";
+    }
+}
+
+async function updatePagination(tabId, data, page = 1) {
     const itemsPerPage = 10;
     const totalPages = Math.ceil(data.length / itemsPerPage);
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, data.length);
     const paginatedData = data.slice(startIndex, endIndex);
 
-    // Ambil container utama untuk daftar surat
     const listElement = document.getElementById(`surat-list-${tabId}`);
     listElement.innerHTML = "";
 
-    paginatedData.forEach((item) => {
-        // Container utama untuk tiap item surat
+    for (const item of paginatedData) {
         const div = document.createElement("div");
         div.classList.add("surat-item", "p-2", "border", "rounded", "mb-2");
         div.style.display = "flex";
         div.style.flexDirection = "column";
 
-        // --- Top Row: Tombol Direktur dan No Surat (rata kiri) ---
         const topRow = document.createElement("div");
         topRow.style.display = "flex";
-        topRow.style.justifyContent = "flex-start"; // elemen rata kiri
+        topRow.style.justifyContent = "flex-start";
         topRow.style.alignItems = "center";
         topRow.style.width = "100%";
-        topRow.style.gap = "10px"; // jarak antara tombol dan teks
+        topRow.style.gap = "10px";
 
-        // Tombol "Direktur"
-        const detailButton = document.createElement("button");
-        detailButton.textContent = "Direktur";
-        detailButton.classList.add("btn", "btn-secondary", "btn-sm");
-        detailButton.style.width = "max-content";
-        detailButton.style.padding = "2px 6px";
-
-        // Elemen teks no surat
         const suratText = document.createElement("span");
-        suratText.textContent = item.no_surat;
+        suratText.textContent = item.no_disposisi;
         suratText.classList.add("fw-bold", "text-break");
 
-        // Urutan: tombol Direktur, kemudian no surat
-        topRow.appendChild(detailButton);
-        topRow.appendChild(suratText);
-
-        // --- Bottom Row: Tombol Proses dan Riwayat (rata kanan) ---
         const bottomRow = document.createElement("div");
         bottomRow.style.display = "flex";
-        bottomRow.style.justifyContent = "flex-end"; // tombol rata kanan
+        bottomRow.style.justifyContent = "space-between";
         bottomRow.style.alignItems = "center";
-        bottomRow.style.marginTop = "10px"; // jarak antara top row dan bottom row
-        bottomRow.style.gap = "10px"; // jarak antar tombol
+        bottomRow.style.marginTop = "10px";
         bottomRow.style.width = "100%";
 
-        // Tombol "Proses"
-        const actionButton = document.createElement("button");
-        actionButton.textContent = "Proses";
-        actionButton.classList.add("btn", "btn-success", "btn-sm");
-        actionButton.style.width = "auto";
+        const leftButtons = document.createElement("div");
+        leftButtons.style.display = "flex";
+        leftButtons.style.gap = "10px";
 
-        // Tombol "Riwayat"
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Riwayat";
-        deleteButton.classList.add("btn", "btn-primary", "btn-sm");
-        deleteButton.style.width = "auto";
+        const rightButtons = document.createElement("div");
+        rightButtons.style.display = "flex";
+        rightButtons.style.gap = "10px";
 
-        // Masukkan tombol-tombol ke dalam bottomRow
-        bottomRow.appendChild(actionButton);
-        bottomRow.appendChild(deleteButton);
+        const detailButton = document.createElement("button");
+        detailButton.innerHTML = '<i class="fas fa-user-tie"></i>';
+        detailButton.classList.add("btn", "btn-secondary", "btn-sm");
+        detailButton.style.width = "auto";
 
-        // Gabungkan topRow dan bottomRow ke dalam container utama
+        getDeskripsiDevisi(item.no_disposisi).then((deskripsi) => {
+            detailButton.innerHTML = `<i class="fas fa-user-tie"></i> ${deskripsi}`;
+        });
+
+        const editButton = document.createElement("button");
+        editButton.innerHTML = '<i class="fas fa-edit"></i>';
+        editButton.classList.add("btn", "btn-warning", "btn-sm");
+        editButton.style.width = "35px";
+
+        const prosesButton = document.createElement("button");
+        prosesButton.innerHTML = '<i class="fas fa-cogs"></i>';
+        prosesButton.classList.add("btn", "btn-success", "btn-sm");
+        prosesButton.style.width = "35px";
+
+        const riwayatButton = document.createElement("button");
+        riwayatButton.innerHTML = '<i class="fas fa-history"></i>';
+        riwayatButton.classList.add("btn", "btn-primary", "btn-sm");
+        riwayatButton.style.width = "35px";
+
+        editButton.addEventListener("click", function () {
+            if (window.editIndexUrl) {
+                localStorage.setItem("no_disposisi", item.no_disposisi); // ✅ Simpan data terbaru
+                console.log("No Disposisi tersimpan di localStorage:", item.no_disposisi); // 🔍 Debugging
+                window.location.href =
+                    window.editIndexUrl +
+                    "?no_disposisi=" +
+                    encodeURIComponent(item.no_disposisi);
+            } else {
+                console.error("Route URL untuk edit.index tidak didefinisikan.");
+            }
+        });
+        
+        prosesButton.addEventListener("click", function () {
+            if (window.prosesIndexUrl) {
+                localStorage.setItem("no_disposisi", item.no_disposisi); // ✅ Simpan data terbaru
+                console.log("No Disposisi tersimpan di localStorage:", item.no_disposisi); // 🔍 Debugging
+                window.location.href =
+                    window.prosesIndexUrl +
+                    "?no_disposisi=" +
+                    encodeURIComponent(item.no_disposisi);
+            } else {
+                console.error(
+                    "Route URL untuk proses.index tidak didefinisikan."
+                );
+            }
+        });
+
+        riwayatButton.addEventListener("click", function () {
+            if (window.riwayatIndexUrl) {
+                window.location.href =
+                    window.riwayatIndexUrl +
+                    "?no_disposisi=" +
+                    encodeURIComponent(item.no_disposisi);
+            } else {
+                console.error(
+                    "Route URL untuk riwayat.index tidak didefinisikan."
+                );
+            }
+        });
+
+        leftButtons.appendChild(detailButton);
+        rightButtons.appendChild(editButton);
+        rightButtons.appendChild(prosesButton);
+        rightButtons.appendChild(riwayatButton);
+
+        bottomRow.appendChild(leftButtons);
+        bottomRow.appendChild(rightButtons);
+
+        topRow.appendChild(suratText);
+
         div.appendChild(topRow);
         div.appendChild(bottomRow);
 
-        // Tambahkan container utama ke listElement
         listElement.appendChild(div);
-    });
+    }
 
-    // Update informasi jumlah data yang tampil (jika elemen tersebut ada)
     const showingInfo = document.getElementById(`showing-info-${tabId}`);
     if (showingInfo) {
-        showingInfo.textContent = `Showing ${startIndex + 1} to ${endIndex} of ${data.length} entries`;
+        showingInfo.textContent = `Showing ${
+            startIndex + 1
+        } to ${endIndex} of ${data.length} entries`;
     }
 
     updatePaginationControls(tabId, data, page);
 }
 
-
-
-
-
-
-// Fungsi hapus data
-// async function deleteItem(id, tabId) {
-//     if (!confirm("Apakah Anda yakin ingin menghapus surat ini?")) return;
-
-//     try {
-//         const response = await fetch(`/api/dispo/${id}`, { method: "DELETE" });
-//         if (response.ok) {
-//             alert("Surat berhasil dihapus.");
-//             loadData(tabId);
-//         } else {
-//             alert("Gagal menghapus surat.");
-//         }
-//     } catch (error) {
-//         console.error("Error deleting data:", error);
-//     }
-// }
-
-// Panggil data saat pertama kali halaman dimuat
 loadData(1);
 loadData(2);
-
