@@ -37,7 +37,7 @@ class AuthController extends Controller
 
             session(['user_id' => $user->id]);
 
-            return redirect()->route('petugas.index');
+            return redirect()->route('dashboard.index');
         }
 
         return back()->withErrors([

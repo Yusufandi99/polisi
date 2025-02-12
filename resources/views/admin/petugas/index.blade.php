@@ -44,13 +44,17 @@
         </div>
 
         <div class="form-group">
-            <label for="id_devisi">Divisi</label>
-            <select name="id_devisi" class="form-control" required>
-                <option value="" selected disabled>-- Pilih Divisi --</option>
-                <option value="1" {{ old('id_devisi') == '1' ? 'selected' : '' }}>Bripda</option>
-                <option value="2" {{ old('id_devisi') == '2' ? 'selected' : '' }}>Kolonel</option>
-            </select>
-        </div>
+    <label for="id_devisi">Divisi</label>
+    <select name="id_devisi" class="form-control" required>
+        <option value="" selected disabled>-- Pilih Divisi --</option>
+        @foreach ($devisi as $d)
+            <option value="{{ $d->id_devisi }}" {{ old('id_devisi') == $d->id_devisi ? 'selected' : '' }}>
+                {{ $d->deskripsi_devisi }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
 
         <div class="form-group">
             <label for="jabatan">Jabatan</label>

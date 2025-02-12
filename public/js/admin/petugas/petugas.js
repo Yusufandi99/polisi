@@ -18,3 +18,13 @@ function togglePassword() {
         passwordInput.type = "password";
     }
 }
+
+    document.getElementById("pdf-file").addEventListener("change", function(event) {
+        const file = event.target.files[0];
+
+        if (file && file.type === "application/pdf") {
+            const objectURL = URL.createObjectURL(file);
+            document.getElementById("pdf-preview-link").href = objectURL;
+            document.getElementById("pdf-preview-link").style.display = "inline-block";
+        }
+    });

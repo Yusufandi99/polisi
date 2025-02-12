@@ -108,5 +108,6 @@
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="Fri, 01 Jan 1990 00:00:00 GMT">
+    <link rel="icon" type="image/png" href="{{ asset('images/polisi-removebg-preview.png') }}">
 
 </head>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Petugas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 class PetugasController extends Controller
 {
@@ -13,7 +15,8 @@ class PetugasController extends Controller
      */
     public function index()
     {
-        return view('admin.petugas.index');
+        $devisi = DB::table('devisi')->get(); 
+        return view('admin.petugas.index', compact('devisi'));
     }
 
     /**

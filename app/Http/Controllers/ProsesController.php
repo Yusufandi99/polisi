@@ -12,10 +12,9 @@ class ProsesController extends Controller
      */
     public function index()
     {
-        $userId = session('user_id'); // Ambil user_id dari session
-        $petugas = Petugas::where('id', $userId)->first(); // Ambil nama dan jabatan
+        $userId = session('user_id'); 
+        $petugas = Petugas::where('id', $userId)->first(); 
         
-        // Ambil data status disposisi dan devisi dari database
         $statusList = DB::table('dispo_status')->get();
         $devisiList = DB::table('devisi')->get();
     
@@ -65,13 +64,23 @@ class ProsesController extends Controller
     }
     
     public function checkValidasi(Request $request)
-{
-    $validated = DB::table('dispo_trans')
-        ->where('no_disposisi', $request->no_disposisi)
-        ->where('id_petugas_validasi', session('user_id'))
-        ->exists();
-
-    return response()->json(['validated' => $validated]);
-}
+    {
+        $validated = DB::table('dispo_trans')
+            ->join('dispo_status', 'dispo_trans.id_status', '=', 'dispo_status.id_status')
+            ->where('dispo_trans.no_disposisi', $request->no_disposisi)
+            ->where('dispo_trans.id_petugas_validasi', session('user_id'))
+            ->select('dispo_trans.id_status', 'dispo_status.closing', 'dispo_trans.waktu_trans')
+            ->orderByDesc('dispo_trans.waktu_trans') 
+            ->first(); 
+    
+        return response()->json([
+            'validated' => !is_null($validated), 
+            'id_status' => $validated->id_status ?? null,
+            'closing' => $validated->closing ?? null,
+            'waktu_trans' => $validated->waktu_trans ?? null, 
+        ]);
+    }
+    
+    
 
 }
